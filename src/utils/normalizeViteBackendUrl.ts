@@ -9,14 +9,14 @@ export function normalizeViteEnvUrl(raw: string): string {
   if (!trimmed) {
     return "";
   }
+  if (trimmed.startsWith("//")) {
+    return `http:${trimmed}`;
+  }
   if (trimmed.startsWith("/")) {
     return trimmed;
   }
   if (trimmed.includes("://")) {
     return trimmed;
-  }
-  if (trimmed.startsWith("//")) {
-    return `http:${trimmed}`;
   }
   return `http://${trimmed}`;
 }

@@ -749,6 +749,71 @@ export default function VendorChat() {
   // Track negotiation phase for flow control (used in future stall detection UI)
   const [, setNegotiationPhase] = useState<NegotiationPhase>('NORMAL_NEGOTIATION');
 
+  // Helper to fetch and process PM response (location 1 & 3)
+  const getAndProcessPMResponse = useCallback(async (messageId: string) => {
+    if (!uniqueToken) return;
+
+    try {
+      setPmTyping(true);
+      const pmResponse = await vendorChatService.getPMResponse(uniqueToken, messageId);
+      logger.debug('[VendorChat] PM response received:', pmResponse);
+
+      if (!pmResponse?.data?.pmMessage) {
+        logger.error('[VendorChat] Invalid PM response - no PM message');
+        toast.error('PM response was incomplete');
+        return;
+      }
+
+      setMessages((prev) => [...prev, pmResponse.data.pmMessage]);
+      if (pmResponse.data.deal) {
+        setDeal(pmResponse.data.deal);
+      }
+
+      if (pmResponse.data.meso && pmResponse.data.meso.success) {
+        setMesoResult(pmResponse.data.meso);
+        setSelectedMesoId(null);
+        if (pmResponse.data.meso.inputDisabled) {
+          setInputMode('disabled');
+        }
+        if (pmResponse.data.meso.phase) {
+          setNegotiationPhase(pmResponse.data.meso.phase);
+        } else {
+          setNegotiationPhase('MESO_PRESENTATION');
+        }
+      } else {
+        setMesoResult(null);
+        const pendingPrompt = pmResponse.data.pmMessage?.engineDecision?.pendingPrompt;
+        if (pendingPrompt?.type === 'payment_terms') {
+          setInputMode('payment_terms_dropdown');
+          setNegotiationPhase('PAYMENT_TERMS_PROMPT');
+        } else if (pendingPrompt?.type === 'discount_percent') {
+          setInputMode('discount_input');
+          setNegotiationPhase('DISCOUNT_PROMPT');
+        } else {
+          setInputMode('text');
+          setNegotiationPhase('NORMAL_NEGOTIATION');
+        }
+      }
+
+      if (pmResponse.data.decision?.action === "ACCEPT") {
+        toast.success("Your offer has been accepted!");
+      } else if (pmResponse.data.decision?.action === "WALK_AWAY") {
+        toast.error("The procurement manager has walked away from this negotiation.");
+      } else if (pmResponse.data.decision?.action === "ESCALATE") {
+        toast("This negotiation has been escalated for review.", { icon: "⚠️" });
+      } else if (pmResponse.data.decision?.action === "REDIRECT") {
+        toast("Your message was redirected back to the negotiation topic.", { icon: "↩️" });
+      } else if (pmResponse.data.decision?.action === "ERROR_RECOVERY") {
+        toast("Something went wrong, but the system recovered. Please continue.", { icon: "🛡️" });
+      }
+    } catch (err: any) {
+      logger.error("[VendorChat] Error getting PM response:", err);
+      toast.error(err.response?.data?.message || "Failed to get response from procurement manager");
+    } finally {
+      setPmTyping(false);
+    }
+  }, [uniqueToken]);
+
   // Fetch deal data
   const fetchDeal = useCallback(async () => {
     if (!uniqueToken) {
@@ -774,13 +839,10 @@ export default function VendorChat() {
       setData(response.data);
       const currentMessages = response.data.messages || [];
       setMessages(currentMessages);
-      setDeal(response.data.deal);
+      const currentDeal = response.data.deal;
+      setDeal(currentDeal);
 
       // Re-derive composer mode from the latest ACCORDO message's pendingPrompt.
-      // This handles both the Round-1 discount prompt (created by
-      // vendorEnterChat) and any in-progress payment-terms prompt (created
-      // mid-conversation by generatePMResponseAsyncService). Survives page
-      // reload the same way the MESO mode does.
       const derived = deriveInputModeFromMessages(currentMessages);
       if (derived) {
         setInputMode(derived);
@@ -789,6 +851,13 @@ export default function VendorChat() {
         } else if (derived === 'payment_terms_dropdown') {
           setNegotiationPhase('PAYMENT_TERMS_PROMPT');
         }
+      }
+
+      // Check if we need to trigger an auto PM response
+      // (If the last message is from VENDOR and status is NEGOTIATING)
+      const lastMessage = currentMessages[currentMessages.length - 1];
+      if (lastMessage && lastMessage.role === 'VENDOR' && currentDeal?.status === 'NEGOTIATING') {
+        getAndProcessPMResponse(lastMessage.id);
       }
     } catch (err: any) {
       logger.error("Error fetching deal:", err);
@@ -799,7 +868,7 @@ export default function VendorChat() {
     } finally {
       setLoading(false);
     }
-  }, [uniqueToken]);
+  }, [uniqueToken, getAndProcessPMResponse]);
 
   useEffect(() => {
     fetchDeal();
@@ -1066,81 +1135,13 @@ export default function VendorChat() {
 
       // Phase 2: Get PM response (async)
       logger.debug('[VendorChat] Phase 2: Getting PM response...');
-      setPmTyping(true);
-      const pmResponse = await vendorChatService.getPMResponse(
-        uniqueToken,
-        messageResponse.data.vendorMessage.id
-      );
-      logger.debug('[VendorChat] Phase 2 response:', pmResponse);
-
-      // Validate PM response before updating state
-      if (!pmResponse?.data?.pmMessage) {
-        logger.error('[VendorChat] Invalid Phase 2 response - no PM message');
-        toast.error('PM response was incomplete');
-        return;
-      }
-
-      // Add PM message to UI
-      setMessages((prev) => [...prev, pmResponse.data.pmMessage]);
-      if (pmResponse.data.deal) {
-        setDeal(pmResponse.data.deal);
-      }
-
-      // Store MESO options if available and manage input mode
-      if (pmResponse.data.meso && pmResponse.data.meso.success) {
-        setMesoResult(pmResponse.data.meso);
-        setSelectedMesoId(null); // Reset selection for new MESO round
-
-        // Update input mode based on MESO flags
-        if (pmResponse.data.meso.inputDisabled) {
-          setInputMode('disabled');
-        }
-
-        // Update negotiation phase from MESO response
-        if (pmResponse.data.meso.phase) {
-          setNegotiationPhase(pmResponse.data.meso.phase);
-        } else {
-          setNegotiationPhase('MESO_PRESENTATION');
-        }
-
-        logger.debug("[VendorChat] MESO options received:", pmResponse.data.meso.options.length);
-      } else {
-        // No MESO on this response. Check if the PM attached a structured
-        // prompt (payment_terms / discount_percent) — if so, switch the
-        // composer into the matching mode. Otherwise fall back to free-text.
-        setMesoResult(null);
-        const pendingPrompt = pmResponse.data.pmMessage?.engineDecision?.pendingPrompt;
-        if (pendingPrompt?.type === 'payment_terms') {
-          setInputMode('payment_terms_dropdown');
-          setNegotiationPhase('PAYMENT_TERMS_PROMPT');
-        } else if (pendingPrompt?.type === 'discount_percent') {
-          setInputMode('discount_input');
-          setNegotiationPhase('DISCOUNT_PROMPT');
-        } else {
-          setInputMode('text');
-          setNegotiationPhase('NORMAL_NEGOTIATION');
-        }
-      }
-
-      // Show notification if deal status changed
-      if (pmResponse.data.decision?.action === "ACCEPT") {
-        toast.success("Your offer has been accepted!");
-      } else if (pmResponse.data.decision?.action === "WALK_AWAY") {
-        toast.error("The procurement manager has walked away from this negotiation.");
-      } else if (pmResponse.data.decision?.action === "ESCALATE") {
-        toast("This negotiation has been escalated for review.", { icon: "⚠️" });
-      } else if (pmResponse.data.decision?.action === "REDIRECT") {
-        toast("Your message was redirected back to the negotiation topic.", { icon: "↩️" });
-      } else if (pmResponse.data.decision?.action === "ERROR_RECOVERY") {
-        toast("Something went wrong, but the system recovered. Please continue.", { icon: "🛡️" });
-      }
+      await getAndProcessPMResponse(messageResponse.data.vendorMessage.id);
     } catch (err: any) {
       logger.error("[VendorChat] Error sending message:", err);
       logger.error("[VendorChat] Error details:", err.response?.data);
       toast.error(err.response?.data?.message || "Failed to send message");
     } finally {
       setSending(false);
-      setPmTyping(false);
     }
   };
 

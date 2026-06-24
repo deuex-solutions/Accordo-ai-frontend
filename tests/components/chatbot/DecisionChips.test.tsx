@@ -39,7 +39,7 @@ describe('DecisionChips', () => {
       render(<DecisionChips decisions={['ACCEPT']} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-green-100');
-      expect(chip.className).toContain('text-green-800');
+      expect(chip.className).toContain('text-green-700');
       expect(chip.className).toContain('border-green-300');
     });
 
@@ -47,35 +47,35 @@ describe('DecisionChips', () => {
       render(<DecisionChips decisions={['COUNTER']} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-blue-100');
-      expect(chip.className).toContain('text-blue-800');
+      expect(chip.className).toContain('text-blue-700');
     });
 
     it('should apply red styles for WALK_AWAY', () => {
       render(<DecisionChips decisions={['WALK_AWAY']} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-red-100');
-      expect(chip.className).toContain('text-red-800');
+      expect(chip.className).toContain('text-red-700');
     });
 
     it('should apply orange styles for ESCALATE', () => {
       render(<DecisionChips decisions={['ESCALATE']} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-orange-100');
-      expect(chip.className).toContain('text-orange-800');
+      expect(chip.className).toContain('text-orange-700');
     });
 
     it('should apply yellow styles for ASK_CLARIFY', () => {
       render(<DecisionChips decisions={['ASK_CLARIFY']} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-yellow-100');
-      expect(chip.className).toContain('text-yellow-800');
+      expect(chip.className).toContain('text-yellow-700');
     });
 
     it('should apply purple styles for REDIRECT', () => {
       render(<DecisionChips decisions={['REDIRECT']} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-purple-100');
-      expect(chip.className).toContain('text-purple-800');
+      expect(chip.className).toContain('text-purple-700');
       expect(chip.className).toContain('border-purple-300');
     });
 
@@ -83,7 +83,7 @@ describe('DecisionChips', () => {
       render(<DecisionChips decisions={['ERROR_RECOVERY']} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-amber-100');
-      expect(chip.className).toContain('text-amber-800');
+      expect(chip.className).toContain('text-amber-700');
       expect(chip.className).toContain('border-amber-300');
     });
 
@@ -91,7 +91,7 @@ describe('DecisionChips', () => {
       render(<DecisionChips decisions={['UNKNOWN' as DecisionAction]} />);
       const chip = screen.getByRole('button');
       expect(chip.className).toContain('bg-gray-100');
-      expect(chip.className).toContain('text-gray-800');
+      expect(chip.className).toContain('text-gray-700');
     });
   });
 
@@ -150,19 +150,19 @@ describe('DecisionChips', () => {
       expect(screen.queryByText('ERROR RECOVERY')).not.toBeInTheDocument();
     });
 
-    it('should display "ACCEPT" for ACCEPT (default underscore replacement)', () => {
+    it('should display "Accept" for ACCEPT (design system label)', () => {
       render(<DecisionChips decisions={['ACCEPT']} />);
-      expect(screen.getByText('ACCEPT')).toBeInTheDocument();
+      expect(screen.getByText('Accept')).toBeInTheDocument();
     });
 
-    it('should display "WALK AWAY" for WALK_AWAY (underscore replaced)', () => {
+    it('should display "Walk Away" for WALK_AWAY (design system label)', () => {
       render(<DecisionChips decisions={['WALK_AWAY']} />);
-      expect(screen.getByText('WALK AWAY')).toBeInTheDocument();
+      expect(screen.getByText('Walk Away')).toBeInTheDocument();
     });
 
-    it('should display "ASK CLARIFY" for ASK_CLARIFY', () => {
+    it('should display "Ask Clarify" for ASK_CLARIFY (design system label)', () => {
       render(<DecisionChips decisions={['ASK_CLARIFY']} />);
-      expect(screen.getByText('ASK CLARIFY')).toBeInTheDocument();
+      expect(screen.getByText('Ask Clarify')).toBeInTheDocument();
     });
   });
 
@@ -210,11 +210,11 @@ describe('DecisionChips', () => {
     it('should render all 7 action types simultaneously', () => {
       render(<DecisionChips decisions={ALL_ACTIONS} />);
 
-      expect(screen.getByText('ACCEPT')).toBeInTheDocument();
-      expect(screen.getByText('COUNTER')).toBeInTheDocument();
-      expect(screen.getByText('WALK AWAY')).toBeInTheDocument();
-      expect(screen.getByText('ESCALATE')).toBeInTheDocument();
-      expect(screen.getByText('ASK CLARIFY')).toBeInTheDocument();
+      expect(screen.getByText('Accept')).toBeInTheDocument();
+      expect(screen.getByText('Counter')).toBeInTheDocument();
+      expect(screen.getByText('Walk Away')).toBeInTheDocument();
+      expect(screen.getByText('Escalate')).toBeInTheDocument();
+      expect(screen.getByText('Ask Clarify')).toBeInTheDocument();
       expect(screen.getByText('Redirected')).toBeInTheDocument();
       expect(screen.getByText('Recovery')).toBeInTheDocument();
     });
