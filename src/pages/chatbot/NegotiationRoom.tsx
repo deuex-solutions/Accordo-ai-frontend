@@ -485,17 +485,23 @@ export default function NegotiationRoom() {
       // Extract MESO info if present in the message
       const mesoInfo = msg.mesoOptions || null;
 
+      // Parse and resolve utilityScore (dealing with DECIMAL as string from Sequelize)
+      const parsedDbUtility = msg.utilityScore != null ? parseFloat(msg.utilityScore) : null;
+      const resolvedUtility = (utilities.total !== undefined && utilities.total !== null)
+        ? utilities.total
+        : parsedDbUtility;
+
       // Build reasoning object for this round
       return {
         round: msg.round || 0,
         timestamp: msg.createdAt,
         action: decision.action || msg.decisionAction || 'COUNTER',
-        utilityScore: msg.utilityScore || utilities.total || null,
+        utilityScore: resolvedUtility,
         reasons: decision.reasons || [],
         counterOffer: counterOffer,
         mesoOptions: mesoInfo,
         // Build human-readable reasoning
-        reasoning: buildReasoningText(decision, utilities, counterOffer, msg.utilityScore),
+        reasoning: buildReasoningText(decision, utilities, counterOffer, resolvedUtility),
       };
     });
   }, [messages]);
@@ -659,10 +665,33 @@ export default function NegotiationRoom() {
 
   // Helper to get utility info for a specific parameter (for display in ParameterRow)
   const getParamUtilityInfo = useCallback((parameterId: string) => {
-    if (!utilityData?.parameterUtilities || !utilityData.parameterUtilities[parameterId]) {
+    if (!utilityData?.parameterUtilities) {
       return undefined;
     }
-    const paramUtil = utilityData.parameterUtilities[parameterId];
+    
+    // Resolve key mapping variations between frontend snake_case and backend camelCase/variants
+    let resolvedKey = parameterId;
+    if (!utilityData.parameterUtilities[resolvedKey]) {
+      if (parameterId === 'unit_price') {
+        const priceFallbacks = ['unitPrice', 'totalPrice', 'targetUnitPrice', 'total_price'];
+        const found = priceFallbacks.find(k => utilityData.parameterUtilities[k] !== undefined);
+        if (found) resolvedKey = found;
+      } else if (parameterId === 'payment_terms') {
+        const termsFallbacks = ['paymentTermsDays', 'paymentTerms', 'paymentTermsRange', 'payment_terms_days'];
+        const found = termsFallbacks.find(k => utilityData.parameterUtilities[k] !== undefined);
+        if (found) resolvedKey = found;
+      } else if (parameterId === 'delivery_date') {
+        const deliveryFallbacks = ['deliveryDate', 'delivery_days', 'deliveryDays'];
+        const found = deliveryFallbacks.find(k => utilityData.parameterUtilities[k] !== undefined);
+        if (found) resolvedKey = found;
+      }
+    }
+
+    if (!utilityData.parameterUtilities[resolvedKey]) {
+      return undefined;
+    }
+
+    const paramUtil = utilityData.parameterUtilities[resolvedKey];
     return {
       utility: paramUtil.utility,
       contribution: paramUtil.contribution,
@@ -1682,7 +1711,7 @@ export default function NegotiationRoom() {
                         label="Max Penalty Cap"
                         value={wizardConfig.contractSla.maxPenaltyCap.type === 'PERCENTAGE'
                           ? `${wizardConfig.contractSla.maxPenaltyCap.value}%`
-                          : `$${wizardConfig.contractSla.maxPenaltyCap.value}`}
+                          : `${dealCurrencySymbol}${wizardConfig.contractSla.maxPenaltyCap.value}`}
                         type="text"
                       />
                     )}
@@ -1745,6 +1774,7 @@ export default function NegotiationRoom() {
         timeline={getAiReasoningTimeline}
         currentIndex={reasoningModalIndex ?? 0}
         onNavigate={setReasoningModalIndex}
+        currencySymbol={dealCurrencySymbol}
       />
     </div>
   );

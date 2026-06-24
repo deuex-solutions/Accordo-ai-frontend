@@ -21,7 +21,7 @@ import chatbotService from '../../services/chatbot.service';
 import { exportToCSV, exportSummaryPDF } from '../../services/export.service';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
-import type { Deal, Message, NegotiationConfig, Explainability } from '../../types/chatbot';
+import type { Deal, Message, NegotiationConfig, Explainability, ExtendedNegotiationConfig } from '../../types/chatbot';
 import logger from "../../utils/logger";
 
 interface SavingsCalculation {
@@ -40,6 +40,12 @@ export default function SummaryPage() {
   const [explainability, setExplainability] = useState<Explainability | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [exporting, setExporting] = useState<boolean>(false);
+
+  const CURRENCY_SYMBOL_MAP: Record<string, string> = {
+    USD: '$', INR: '₹', EUR: '€', GBP: '£', AUD: 'A$',
+  };
+  const dealCurrencyCode = (config as ExtendedNegotiationConfig | null)?.currency ?? 'USD';
+  const dealCurrencySymbol = CURRENCY_SYMBOL_MAP[dealCurrencyCode] ?? dealCurrencyCode + ' ';
 
   useEffect(() => {
     loadData();
@@ -274,7 +280,7 @@ export default function SummaryPage() {
               </div>
               <div className="space-y-1">
                 <p className="text-3xl font-bold text-green-600 dark:text-green-400">
-                  ${savings.savings.toFixed(2)}
+                  {dealCurrencySymbol}{savings.savings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {savings.savingsPercent}% below target
@@ -290,10 +296,10 @@ export default function SummaryPage() {
               </div>
               <div className="space-y-1">
                 <p className="text-3xl font-bold text-gray-900 dark:text-dark-text">
-                  ${savings.finalPrice}
+                  {dealCurrencySymbol}{savings.finalPrice.toLocaleString()}
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Target: ${savings.targetPrice}
+                  Target: {dealCurrencySymbol}{savings.targetPrice.toLocaleString()}
                 </p>
               </div>
             </div>
@@ -378,7 +384,7 @@ export default function SummaryPage() {
                 {msg.extractedOffer && (
                   <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                     <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Offer: ${msg.extractedOffer.unit_price} • {msg.extractedOffer.payment_terms}
+                      Offer: {dealCurrencySymbol}{msg.extractedOffer.unit_price.toLocaleString()} • {msg.extractedOffer.payment_terms}
                     </p>
                   </div>
                 )}

@@ -29,6 +29,7 @@ interface AiReasoningModalProps {
   timeline: ReasoningTimelineItem[];
   currentIndex: number;
   onNavigate: (index: number) => void;
+  currencySymbol?: string;
 }
 
 function getActionStyle(action: string) {
@@ -56,6 +57,7 @@ export default function AiReasoningModal({
   timeline,
   currentIndex,
   onNavigate,
+  currencySymbol = "$",
 }: AiReasoningModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -191,7 +193,7 @@ export default function AiReasoningModal({
                       <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400 uppercase">Price</span>
                     </div>
                     <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                      ${item.counterOffer!.total_price!.toLocaleString()}
+                      {currencySymbol}{item.counterOffer!.total_price!.toLocaleString()}
                     </span>
                   </div>
                 )}
@@ -278,7 +280,7 @@ export default function AiReasoningModal({
                     <div className="flex items-center gap-2">
                       {opt.offer?.total_price != null && (
                         <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                          ${opt.offer.total_price.toLocaleString()}
+                          {currencySymbol}{opt.offer.total_price.toLocaleString()}
                         </span>
                       )}
                       {opt.emphasis && (
