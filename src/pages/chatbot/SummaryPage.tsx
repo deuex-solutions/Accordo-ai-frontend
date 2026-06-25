@@ -384,7 +384,7 @@ export default function SummaryPage() {
                 {msg.extractedOffer && (
                   <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                     <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Offer: {dealCurrencySymbol}{msg.extractedOffer.unit_price.toLocaleString()} • {msg.extractedOffer.payment_terms}
+                      Offer: {dealCurrencySymbol}{(msg.extractedOffer.unit_price ?? msg.extractedOffer.total_price ?? 0).toLocaleString()} • {msg.extractedOffer.payment_terms}
                     </p>
                   </div>
                 )}
