@@ -10,7 +10,7 @@
 // ============================================================================
 
 export type DealStatus = 'NEGOTIATING' | 'ACCEPTED' | 'WALKED_AWAY' | 'ESCALATED';
-export type DealMode = 'INSIGHTS' | 'CONVERSATION';
+export type DealMode = 'CONVERSATION';
 export type ArchiveFilter = 'active' | 'archived' | 'all';
 
 /**

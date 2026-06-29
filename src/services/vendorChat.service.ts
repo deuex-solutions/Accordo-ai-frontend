@@ -82,7 +82,7 @@ export interface VendorDeal {
   title: string;
   status: "NEGOTIATING" | "ACCEPTED" | "WALKED_AWAY" | "ESCALATED";
   round: number;
-  mode: "INSIGHTS" | "CONVERSATION";
+  mode: "CONVERSATION";
   createdAt: string;
   updatedAt: string;
 }

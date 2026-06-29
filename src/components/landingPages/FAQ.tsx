@@ -5,7 +5,7 @@ const faqs = [
   {
     question: "How does Accordo AI conduct negotiations?",
     answer:
-      "Accordo AI uses advanced LLM-powered conversation engines combined with utility-based decision algorithms. It operates in two modes: INSIGHTS mode for automated, deterministic negotiations based on predefined parameters, and CONVERSATION mode for natural language interactions with vendors. The AI adapts its strategy in real-time based on vendor responses and your configured preferences.",
+      "Accordo AI uses advanced LLM-powered conversation engines combined with utility-based decision algorithms for natural language interactions with vendors. The AI adapts its strategy in real-time based on vendor responses and your configured preferences.",
   },
   {
     question: "How long does implementation take?",

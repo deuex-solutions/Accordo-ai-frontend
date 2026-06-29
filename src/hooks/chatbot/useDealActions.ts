@@ -2,7 +2,6 @@
  * useDealActions Hook
  *
  * Advanced deal management hook with permissions and configuration.
- * Used for INSIGHTS mode negotiations.
  *
  * Updated January 2026: Uses lookupDeal to get DealContext for nested API calls.
  * Updated January 2026: Fixed blank screen issue with proper error handling and toast notifications.

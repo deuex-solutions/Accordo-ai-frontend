@@ -196,12 +196,8 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           <DataRow
             label="Negotiation Mode"
             value={
-              <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                data.stepOne.mode === 'INSIGHTS'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'bg-cyan-100 text-cyan-700'
-              }`}>
-                {data.stepOne.mode === 'INSIGHTS' ? 'Automated (INSIGHTS)' : 'Conversational'}
+              <span className="px-2 py-0.5 rounded text-xs font-medium bg-cyan-100 text-cyan-700">
+                Conversational
               </span>
             }
           />

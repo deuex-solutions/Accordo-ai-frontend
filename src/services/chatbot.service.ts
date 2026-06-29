@@ -454,15 +454,11 @@ export const chatbotService = {
     return res.data;
   },
 
-  // ==================== MESSAGING (MERGED INSIGHTS + CONVERSATION) ====================
+  // ==================== MESSAGING (CONVERSATIONAL NEGOTIATION) ====================
 
   /**
-   * Send a message (unified endpoint for both INSIGHTS and CONVERSATION modes)
+   * Send a message (Conversational Negotiation)
    * POST /api/chatbot/requisitions/:rfqId/vendors/:vendorId/deals/:dealId/messages
-   * Query: ?mode=INSIGHTS or ?mode=CONVERSATION
-   *
-   * - mode=INSIGHTS: Deterministic decision engine (processVendorMessage)
-   * - mode=CONVERSATION: LLM-driven conversational (sendConversationMessage)
    */
   sendMessage: async (
     ctx: DealContext,
