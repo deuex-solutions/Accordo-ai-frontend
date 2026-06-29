@@ -431,7 +431,9 @@ export default function NegotiationRoom() {
     // Add utility-based reasoning
     if (utilityScore !== null) {
       const utilityPercent = (utilityScore * 100).toFixed(0);
-      if (utilityScore >= 0.7) {
+      if (decision?.action === "COUNTER") {
+        reasons.push(`Utility score of ${utilityPercent}% requires active counter-proposal`);
+      } else if (utilityScore >= 0.7) {
         reasons.push(`Utility score of ${utilityPercent}% meets acceptance threshold`);
       } else if (utilityScore >= 0.5) {
         reasons.push(`Utility score of ${utilityPercent}% is in counter-offer zone`);
