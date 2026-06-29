@@ -47,7 +47,7 @@ const AnimatedCounter = ({ end, suffix, duration = 2000 }: CounterProps) => {
 
   return (
     <div ref={ref}>
-      <span className="text-4xl md:text-5xl font-bold text-landing-text tracking-tight">
+      <span className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
         {count}
         {suffix}
       </span>
@@ -78,7 +78,7 @@ const differentiators = [
     suffix: "%",
     label: "Supplier Satisfaction",
     description:
-      "Suppliers report overwhelmingly positive experiences. AI finds mutually beneficial outcomes, strengthening vendor relationships.",
+      "Suppliers report overwhelmingly positive experiences. AI finds mutually beneficial Pareto outcomes, strengthening vendor relationships.",
   },
   {
     icon: Zap,
@@ -92,44 +92,42 @@ const differentiators = [
 
 const WhyChooseUs = () => {
   return (
-    <section id="why-us" className="landing-section bg-white">
-      <div className="landing-container">
+    <section id="why-us" className="landing-section bg-[#0B0F17] text-white py-24 border-t border-white/5 relative overflow-hidden">
+      {/* Ambient Glow */}
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none" />
+
+      <div className="landing-container relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 scroll-reveal" data-reveal="fade-up">
-          <p className="text-primary-500 font-semibold text-sm uppercase tracking-wider mb-3">
-            Why Accordo AI
+          <p className="text-primary-400 font-semibold text-xs md:text-sm uppercase tracking-wider mb-3">
+            Proven Industry Impact
           </p>
-          <h2 className="landing-heading mb-5">
-            Results That Speak for Themselves
+          <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-5">
+            Why Enterprise Leaders Choose Accordo AI
           </h2>
-          <p className="landing-subheading mx-auto font-Inter">
-            Enterprise procurement teams choose Accordo AI for measurable outcomes
-            that transform their bottom line.
+          <p className="text-base md:text-lg text-white/65 mx-auto font-Inter leading-relaxed">
+            Delivering measurable commercial value, accelerated turnaround, and guaranteed policy compliance.
           </p>
         </div>
 
-        {/* Differentiator Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {differentiators.map((item, index) => {
-            const Icon = item.icon;
+        {/* 4 Cards Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {differentiators.map((diff) => {
+            const IconComponent = diff.icon;
             return (
               <div
-                key={item.label}
-                className="group text-center p-8 rounded-2xl bg-landing-bg-alt border border-landing-border-light hover:border-primary-200 hover:shadow-lg hover:shadow-primary-500/5 transition-all duration-300 scroll-reveal"
-                data-reveal="fade-up"
-                data-reveal-delay={String(index * 100)}
+                key={diff.label}
+                className="rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/10 p-8 hover:bg-white/[0.06] transition-all duration-300 hover:-translate-y-1 shadow-xl"
               >
-                <div className="w-14 h-14 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary-100 transition-colors">
-                  <Icon className="w-7 h-7 text-primary-500" />
+                <div className="w-12 h-12 rounded-xl bg-primary-500/20 border border-primary-500/30 flex items-center justify-center mb-6">
+                  <IconComponent className="w-6 h-6 text-primary-400" />
                 </div>
-
-                <AnimatedCounter end={item.metric} suffix={item.suffix} />
-
-                <p className="text-lg font-semibold text-landing-text mt-2 mb-3">
-                  {item.label}
-                </p>
-                <p className="text-sm text-landing-text-secondary leading-relaxed font-Inter">
-                  {item.description}
+                <AnimatedCounter end={diff.metric} suffix={diff.suffix} />
+                <h3 className="text-lg font-bold text-white mt-2 mb-3">
+                  {diff.label}
+                </h3>
+                <p className="text-sm text-white/60 font-Inter leading-relaxed">
+                  {diff.description}
                 </p>
               </div>
             );
