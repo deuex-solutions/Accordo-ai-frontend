@@ -985,6 +985,8 @@ export const DEFAULT_WIZARD_FORM_DATA: DealWizardFormData = {
     priceQuantity: {
       targetUnitPrice: null,
       maxAcceptablePrice: null,
+      minTotalPrice: null,
+      maxTotalPrice: null,
       minOrderQuantity: null,
       preferredQuantity: null,
       currency: null,

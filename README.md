@@ -1,6 +1,6 @@
 # Accordo AI — Frontend
 
-React-based procurement negotiation platform with real-time AI strategy visualization, MESO negotiations, and vendor management.
+React-based B2B procurement negotiation platform powered by real-time LangGraph multi-agent AI visualization, dynamic Pareto MESO trade-off selection, automated contract synthesis, and multi-vendor quote analytics.
 
 ## Quick Start
 
