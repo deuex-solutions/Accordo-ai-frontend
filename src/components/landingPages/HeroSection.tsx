@@ -32,9 +32,9 @@ const HeroSection = () => {
           {/* Left Content */}
           <div className="scroll-reveal" data-reveal="fade-right">
             {/* Agentic Framework Badge */}
-            <div className="inline-flex items-center gap-2.5 bg-gradient-to-r from-primary-500/20 to-indigo-500/20 border border-primary-400/30 rounded-full px-4.5 py-2 mb-8 backdrop-blur-md shadow-lg shadow-primary-500/10">
-              <div className="w-2.5 h-2.5 bg-cyan-400 rounded-full animate-pulse" />
-              <span className="text-white/90 text-xs md:text-sm font-semibold tracking-wide uppercase">
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary-500/20 via-indigo-500/20 to-cyan-500/20 border border-primary-400/30 rounded-full px-6 py-2.5 mb-8 backdrop-blur-md shadow-lg shadow-primary-500/10 max-w-max">
+              <span className="w-2.5 h-2.5 bg-cyan-400 rounded-full animate-pulse flex-shrink-0" />
+              <span className="text-white/90 text-xs md:text-sm font-semibold tracking-wide uppercase whitespace-nowrap">
                 ⚡ Autonomous Agentic AI Framework
               </span>
             </div>
