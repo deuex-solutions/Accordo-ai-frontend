@@ -31,34 +31,33 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[90vh] pt-28 pb-16 lg:pt-32 lg:pb-24">
           {/* Left Content */}
           <div className="scroll-reveal" data-reveal="fade-right">
-            {/* Trust badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 mb-8">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-white/70 text-sm font-medium">
-                Trusted by Enterprise Procurement Teams
+            {/* Agentic Framework Badge */}
+            <div className="inline-flex items-center gap-2.5 bg-gradient-to-r from-primary-500/20 to-indigo-500/20 border border-primary-400/30 rounded-full px-4.5 py-2 mb-8 backdrop-blur-md shadow-lg shadow-primary-500/10">
+              <div className="w-2.5 h-2.5 bg-cyan-400 rounded-full animate-pulse" />
+              <span className="text-white/90 text-xs md:text-sm font-semibold tracking-wide uppercase">
+                ⚡ Autonomous Agentic AI Framework
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.15] tracking-tight mb-6">
-              AI-Powered Procurement{" "}
+            <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.15] tracking-tight mb-6">
+              Autonomous{" "}
               <span
                 style={{
                   backgroundImage:
-                    "linear-gradient(to right, #5A78FA, #93C5FD)",
+                    "linear-gradient(to right, #60A5FA, #A78BFA, #38BDF8)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                 }}
               >
-                Negotiations
+                Agentic AI Procurement
               </span>{" "}
               at Enterprise Scale
             </h1>
 
-            <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-lg font-Inter">
-              Automate thousands of vendor negotiations simultaneously. Reduce
-              procurement costs, accelerate deal cycles, and let AI find better
-              outcomes for both sides.
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-xl font-Inter">
+              Deploy specialized AI agent swarms to negotiate thousands of supplier contracts autonomously. 
+              Combining Pareto-optimal game theory, deterministic guardrails, and automated legal contract synthesis.
             </p>
 
             {/* CTAs */}

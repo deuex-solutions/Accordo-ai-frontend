@@ -1,6 +1,7 @@
 import { useScrollReveal } from "../../hooks/useScrollReveal";
 import Navbar from "./Navbar";
 import HeroSection from "./HeroSection";
+import AgenticFramework from "./AgenticFramework";
 // import LogoBar from "./LogoBar"; // TODO: Re-enable when partner logos are ready
 import Features from "./Features";
 import HowItWorks from "./HowItWorks";
@@ -21,6 +22,7 @@ const HomePage = () => {
     <div className="relative bg-white text-landing-text overflow-x-hidden">
       <Navbar />
       <HeroSection />
+      <AgenticFramework />
       {/* <LogoBar /> */}{/* TODO: Re-enable when partner logos are ready */}
       <Features />
       <HowItWorks />
