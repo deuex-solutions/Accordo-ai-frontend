@@ -372,17 +372,21 @@ const StepTwo: React.FC<StepTwoProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Total Target Price */}
+          {/* Minimum Price (Total) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-dark-text-secondary mb-1">
-              Total Target Price <span className="text-red-500">*</span>
+              Minimum Price (Total) <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-dark-text-secondary">{currencySymbol}</span>
               <input
                 type="number"
-                value={data.priceQuantity.targetUnitPrice ?? ''}
-                onChange={(e) => updatePriceQuantity('targetUnitPrice', parseNumber(e.target.value))}
+                value={data.priceQuantity.minTotalPrice ?? data.priceQuantity.targetUnitPrice ?? ''}
+                onChange={(e) => {
+                  const val = parseNumber(e.target.value);
+                  updatePriceQuantity('minTotalPrice', val);
+                  updatePriceQuantity('targetUnitPrice', val);
+                }}
                 placeholder="0.00"
                 step="0.01"
                 min="0"
@@ -390,30 +394,34 @@ const StepTwo: React.FC<StepTwoProps> = ({
                   w-full pl-8 pr-4 py-2.5 border rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-blue-500
                   dark:bg-dark-bg dark:border-dark-border dark:text-dark-text
-                  ${errors.targetUnitPrice ? 'border-red-300 bg-red-50' : 'border-gray-300 dark:border-dark-border'}
+                  ${errors.minTotalPrice || errors.targetUnitPrice ? 'border-red-300 bg-red-50' : 'border-gray-300 dark:border-dark-border'}
                 `}
               />
             </div>
-            {errors.targetUnitPrice && (
+            {(errors.minTotalPrice || errors.targetUnitPrice) && (
               <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                 <AlertCircle className="w-3.5 h-3.5" />
-                {errors.targetUnitPrice}
+                {errors.minTotalPrice || errors.targetUnitPrice}
               </p>
             )}
-            <p className="mt-1 text-xs text-gray-500 dark:text-dark-text-secondary">Total ideal price for all items (auto-filled from requisition)</p>
+            <p className="mt-1 text-xs text-gray-500 dark:text-dark-text-secondary">Minimum total target contract price for all items</p>
           </div>
 
-          {/* Total Maximum Price */}
+          {/* Maximum Price (Total) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-dark-text-secondary mb-1">
-              Total Maximum Price <span className="text-red-500">*</span>
+              Maximum Price (Total) <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-dark-text-secondary">{currencySymbol}</span>
               <input
                 type="number"
-                value={data.priceQuantity.maxAcceptablePrice ?? ''}
-                onChange={(e) => updatePriceQuantity('maxAcceptablePrice', parseNumber(e.target.value))}
+                value={data.priceQuantity.maxTotalPrice ?? data.priceQuantity.maxAcceptablePrice ?? ''}
+                onChange={(e) => {
+                  const val = parseNumber(e.target.value);
+                  updatePriceQuantity('maxTotalPrice', val);
+                  updatePriceQuantity('maxAcceptablePrice', val);
+                }}
                 placeholder="0.00"
                 step="0.01"
                 min="0"
@@ -421,17 +429,17 @@ const StepTwo: React.FC<StepTwoProps> = ({
                   w-full pl-8 pr-4 py-2.5 border rounded-lg
                   focus:outline-none focus:ring-2 focus:ring-blue-500
                   dark:bg-dark-bg dark:border-dark-border dark:text-dark-text
-                  ${errors.maxAcceptablePrice ? 'border-red-300 bg-red-50' : 'border-gray-300 dark:border-dark-border'}
+                  ${errors.maxTotalPrice || errors.maxAcceptablePrice ? 'border-red-300 bg-red-50' : 'border-gray-300 dark:border-dark-border'}
                 `}
               />
             </div>
-            {errors.maxAcceptablePrice && (
+            {(errors.maxTotalPrice || errors.maxAcceptablePrice) && (
               <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                 <AlertCircle className="w-3.5 h-3.5" />
-                {errors.maxAcceptablePrice}
+                {errors.maxTotalPrice || errors.maxAcceptablePrice}
               </p>
             )}
-            <p className="mt-1 text-xs text-gray-500 dark:text-dark-text-secondary">Walk-away total price ceiling (auto-filled from requisition)</p>
+            <p className="mt-1 text-xs text-gray-500 dark:text-dark-text-secondary">Maximum total acceptable contract price ceiling</p>
           </div>
 
           {/* Total Order Quantity */}

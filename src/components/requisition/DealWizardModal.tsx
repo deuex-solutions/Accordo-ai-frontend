@@ -372,22 +372,20 @@ const DealWizardModal: React.FC<DealWizardModalProps> = ({
     const newErrors: Record<string, string> = {};
     const { priceQuantity, paymentTerms, delivery } = formData.stepTwo;
 
-    if (!priceQuantity.targetUnitPrice || priceQuantity.targetUnitPrice <= 0) {
-      newErrors.targetUnitPrice = "Target unit price is required";
+    const targetVal = (priceQuantity as any).minTotalPrice ?? (priceQuantity as any).minUnitPrice ?? priceQuantity.targetUnitPrice;
+    const maxVal = (priceQuantity as any).maxTotalPrice ?? (priceQuantity as any).maxUnitPrice ?? priceQuantity.maxAcceptablePrice;
+
+    if (!targetVal || targetVal <= 0) {
+      newErrors.minTotalPrice = "Minimum price is required";
+      newErrors.targetUnitPrice = "Minimum price is required";
     }
-    if (
-      !priceQuantity.maxAcceptablePrice ||
-      priceQuantity.maxAcceptablePrice <= 0
-    ) {
-      newErrors.maxAcceptablePrice = "Maximum acceptable price is required";
+    if (!maxVal || maxVal <= 0) {
+      newErrors.maxTotalPrice = "Maximum price is required";
+      newErrors.maxAcceptablePrice = "Maximum price is required";
     }
-    if (
-      priceQuantity.targetUnitPrice &&
-      priceQuantity.maxAcceptablePrice &&
-      priceQuantity.maxAcceptablePrice < priceQuantity.targetUnitPrice
-    ) {
-      newErrors.maxAcceptablePrice =
-        "Maximum price must be greater than or equal to target price";
+    if (targetVal && maxVal && maxVal < targetVal) {
+      newErrors.maxTotalPrice = "Maximum price must be greater than or equal to minimum price";
+      newErrors.maxAcceptablePrice = "Maximum price must be greater than or equal to minimum price";
     }
     if (
       !priceQuantity.minOrderQuantity ||
@@ -469,9 +467,9 @@ const DealWizardModal: React.FC<DealWizardModalProps> = ({
     if (!formData.stepOne.title.trim())
       allErrors.step1_title = ["Deal title is required"];
     if (!formData.stepTwo.priceQuantity.targetUnitPrice)
-      allErrors.step2_targetPrice = ["Target unit price is required"];
+      allErrors.step2_targetPrice = ["Minimum price is required"];
     if (!formData.stepTwo.priceQuantity.maxAcceptablePrice)
-      allErrors.step2_maxPrice = ["Maximum acceptable price is required"];
+      allErrors.step2_maxPrice = ["Maximum price is required"];
     if (!formData.stepTwo.delivery.requiredDate)
       allErrors.step2_deliveryDate = ["Required delivery date is required"];
     if (!formData.stepThree.contractSla.warrantyPeriod)

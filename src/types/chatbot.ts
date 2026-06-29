@@ -224,8 +224,12 @@ export interface NegotiationConfig {
 export interface WizardConfig {
   priority: NegotiationPriority;
   priceQuantity: {
-    targetUnitPrice: number;
-    maxAcceptablePrice: number;
+    targetUnitPrice?: number;
+    minUnitPrice?: number;
+    minTotalPrice?: number;
+    maxAcceptablePrice?: number;
+    maxUnitPrice?: number;
+    maxTotalPrice?: number;
     minOrderQuantity: number;
     preferredQuantity?: number;
   };
@@ -502,8 +506,12 @@ export interface DealWizardStepOne {
  * Step 2: Price & Quantity Parameters
  */
 export interface PriceQuantityParams {
-  targetUnitPrice: number | null;
-  maxAcceptablePrice: number | null;
+  targetUnitPrice?: number | null;
+  minUnitPrice?: number | null;
+  minTotalPrice: number | null;
+  maxAcceptablePrice?: number | null;
+  maxUnitPrice?: number | null;
+  maxTotalPrice: number | null;
   minOrderQuantity: number | null;
   preferredQuantity: number | null;
   /** Currency code selected in Step 2 (e.g. "USD", "INR", "EUR"). Persisted in formData so it survives tab switches and draft restoration. */
@@ -661,8 +669,12 @@ export interface CreateDealWithConfigInput {
  */
 export interface SmartDefaults {
   priceQuantity: {
-    targetUnitPrice: number | null;
-    maxAcceptablePrice: number | null;
+    targetUnitPrice?: number | null;
+    minUnitPrice?: number | null;
+    minTotalPrice?: number | null;
+    maxAcceptablePrice?: number | null;
+    maxUnitPrice?: number | null;
+    maxTotalPrice?: number | null;
     // New fields for auto-populating from requisition totals
     totalQuantity: number | null;
     totalTargetPrice: number | null;

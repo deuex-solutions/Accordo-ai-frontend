@@ -549,13 +549,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         />
                       </div>
 
-                      {/* Target Unit Price Field */}
+                      {/* Minimum Unit Price Field */}
                       <div className="flex flex-col">
                         <span className="text-xs text-gray-600 dark:text-dark-text-secondary mb-1 font-medium">
-                          Target Unit Price
+                          Minimum Unit Price
                         </span>
                         <FormInput
-                          placeholder="Enter target Price"
+                          placeholder="Enter minimum unit price"
                           type="number"
                           min={0}
                           name="targetPrice"
@@ -589,13 +589,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         />
                       </div>
 
-                      {/* Maximum Acceptable Price Field */}
+                      {/* Maximum Unit Price Field */}
                       <div className="flex flex-col">
                         <span className="text-xs text-gray-600 dark:text-dark-text-secondary mb-1 font-medium">
-                          Maximum Acceptable Price
+                          Maximum Unit Price
                         </span>
                         <FormInput
-                          placeholder="Enter max acceptable price"
+                          placeholder="Enter maximum unit price"
                           type="number"
                           min={0}
                           name="maximum_price"
@@ -660,7 +660,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               className="my-1"
             />
             <FormInput
-              label="Total Unit Price"
+              label="Minimum Price (Total)"
               name="totalPrice"
               disabled={true}
               value={watch("totalPrice") || ""}
@@ -669,7 +669,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
               className="my-1"
             />
             <FormInput
-              label="Total Maximum Acceptable Price"
+              label="Maximum Price (Total)"
               name="totalMaxPrice"
               disabled={true}
               value={watch("totalMaxPrice") || ""}

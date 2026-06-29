@@ -174,12 +174,20 @@ export function getParameterDisplayName(parameterId: string): string {
     total_price: "Total Price",
     unit_price: "Total Price",  // Legacy support - map to Total Price
     target_price: "Target Price",
-    max_acceptable_price: "Max Acceptable Price",
-    maxAcceptablePrice: "Max Acceptable Price",   // legacy camelCase
+    max_acceptable_price: "Maximum Price (Total)",
+    maxAcceptablePrice: "Maximum Price (Total)",   // legacy camelCase
+    minTotalPrice: "Minimum Price (Total)",
+    minUnitPrice: "Minimum Unit Price",
+    maxTotalPrice: "Maximum Price (Total)",
+    maxUnitPrice: "Maximum Unit Price",
+    min_total_price: "Minimum Price (Total)",
+    min_unit_price: "Minimum Unit Price",
+    max_total_price: "Maximum Price (Total)",
+    max_unit_price: "Maximum Unit Price",
     anchor_price: "Anchor Price",
     payment_terms: "Payment Terms",
     paymentTerms: "Payment Terms",                // Feb 2026: replaces maxAcceptablePrice in Step 4
-    targetUnitPrice: "Total Target Price",
+    targetUnitPrice: "Minimum Price (Total)",
     deliveryDate: "Delivery Date",
     warrantyPeriod: "Warranty Period",
     qualityStandards: "Quality Standards",

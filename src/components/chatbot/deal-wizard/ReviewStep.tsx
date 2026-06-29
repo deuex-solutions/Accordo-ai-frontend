@@ -234,13 +234,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({
           <div className="bg-gray-50 dark:bg-dark-bg/50 rounded-lg p-3">
             <div className="grid grid-cols-2 gap-x-6">
               <DataRow
-                label="Target Unit Price"
-                value={formatCurrency(data.stepTwo.priceQuantity.targetUnitPrice)}
+                label="Minimum Price (Total)"
+                value={formatCurrency(data.stepTwo.priceQuantity.minTotalPrice ?? data.stepTwo.priceQuantity.targetUnitPrice ?? null)}
                 highlight
               />
               <DataRow
-                label="Max Acceptable Price"
-                value={formatCurrency(data.stepTwo.priceQuantity.maxAcceptablePrice)}
+                label="Maximum Price (Total)"
+                value={formatCurrency(data.stepTwo.priceQuantity.maxTotalPrice ?? data.stepTwo.priceQuantity.maxAcceptablePrice ?? null)}
               />
               <DataRow
                 label="Min Order Quantity"

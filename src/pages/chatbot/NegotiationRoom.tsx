@@ -328,7 +328,7 @@ export default function NegotiationRoom() {
   const CURRENCY_SYMBOL_MAP: Record<string, string> = {
     USD: '$', INR: '₹', EUR: '€', GBP: '£', AUD: 'A$',
   };
-  const dealCurrencyCode = (config as ExtendedNegotiationConfig | null)?.currency ?? 'USD';
+  const dealCurrencyCode = (config as ExtendedNegotiationConfig | null)?.currency ?? (deal as any)?.currency ?? (deal as any)?.requisition?.typeOfCurrency ?? 'USD';
   const dealCurrencySymbol = CURRENCY_SYMBOL_MAP[dealCurrencyCode] ?? dealCurrencyCode + ' ';
 
   const formatCurrency = (value: number | null): string => {
@@ -1504,20 +1504,20 @@ export default function NegotiationRoom() {
                   isLive={(deal?.round ?? 0) > 0}
                 >
                   <div className="space-y-2">
-                    {/* Target Unit Price: wizardConfig fallback to engine target - with range visualization */}
+                    {/* Minimum Price (Total): wizardConfig fallback to engine target - with range visualization */}
                     <ParameterRow
-                      label="Target Unit Price"
-                      value={wizardConfig?.priceQuantity?.targetUnitPrice || adaptiveConfig?.parameters?.unit_price?.target}
+                      label="Minimum Price (Total)"
+                      value={(wizardConfig?.priceQuantity as any)?.minTotalPrice ?? wizardConfig?.priceQuantity?.targetUnitPrice ?? adaptiveConfig?.parameters?.unit_price?.target}
                       type="currency"
                       currencyCode={dealCurrencyCode}
                       utilityInfo={getParamUtilityInfo('unit_price')}
                       rangeMin={adaptiveConfig?.parameters?.unit_price?.anchor}
-                      rangeMax={wizardConfig?.priceQuantity?.maxAcceptablePrice || adaptiveConfig?.parameters?.unit_price?.max_acceptable}
+                      rangeMax={(wizardConfig?.priceQuantity as any)?.maxTotalPrice ?? wizardConfig?.priceQuantity?.maxAcceptablePrice ?? adaptiveConfig?.parameters?.unit_price?.max_acceptable}
                     />
-                    {/* Max Acceptable Price: wizardConfig fallback to engine max */}
+                    {/* Maximum Price (Total): wizardConfig fallback to engine max */}
                     <ParameterRow
-                      label="Max Acceptable Price"
-                      value={wizardConfig?.priceQuantity?.maxAcceptablePrice || adaptiveConfig?.parameters?.unit_price?.max_acceptable}
+                      label="Maximum Price (Total)"
+                      value={(wizardConfig?.priceQuantity as any)?.maxTotalPrice ?? wizardConfig?.priceQuantity?.maxAcceptablePrice ?? adaptiveConfig?.parameters?.unit_price?.max_acceptable}
                       type="currency"
                       currencyCode={dealCurrencyCode}
                     />

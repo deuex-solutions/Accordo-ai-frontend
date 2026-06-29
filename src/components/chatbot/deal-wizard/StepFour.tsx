@@ -21,7 +21,7 @@ interface StepFourProps {
 // UPDATED Feb 2026: Simplified to 5 core utility parameters
 // paymentTerms replaces maxAcceptablePrice (avoids double-counting price dimension)
 const STEP2_PARAMETERS = [
-  { id: "targetUnitPrice", name: "Total Target Price", source: "step2" as const },
+  { id: "minTotalPrice", name: "Minimum Price (Total)", source: "step2" as const },
   { id: "paymentTerms", name: "Payment Terms", source: "step2" as const },
   { id: "deliveryDate", name: "Delivery Date", source: "step2" as const },
 ];
@@ -31,11 +31,8 @@ const STEP3_PARAMETERS = [
   { id: "qualityStandards", name: "Quality Standards", source: "step3" as const },
 ];
 
-// Default weights distribution (AI-suggested)
-// Updated Feb 2026: paymentTerms replaces maxAcceptablePrice
-// Primary (85%): targetUnitPrice(40) + paymentTerms(25) + deliveryDate(20)
-// Secondary (15%): warrantyPeriod(10) + qualityStandards(5)
 const getDefaultWeights = (): Record<string, number> => ({
+  minTotalPrice: 40,
   targetUnitPrice: 40,
   paymentTerms: 25,
   deliveryDate: 20,

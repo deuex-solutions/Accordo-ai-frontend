@@ -126,14 +126,14 @@ export const step2 = z.object({
     .union([z.string(), z.number()])
     .transform((val) => (typeof val === "string" ? parseFloat(val) || 0 : val))
     .refine((val) => Number.isFinite(val) && val >= 0, {
-      message: "Total Unit Price must be a positive number",
+      message: "Minimum Price (Total) must be a positive number",
     }),
 
   totalMaxPrice: z
     .union([z.string(), z.number()])
     .transform((val) => (typeof val === "string" ? parseFloat(val) || 0 : val))
     .refine((val) => Number.isFinite(val) && val >= 0, {
-      message: "Total Maximum Acceptable Price must be a positive number",
+      message: "Maximum Price (Total) must be a positive number",
     })
     .optional(),
 
