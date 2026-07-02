@@ -94,15 +94,15 @@ const MessageBubble = ({ message }: { message: VendorChatMessage }) => {
       <div
         className={`max-w-[70%] px-4 py-3 rounded-lg ${
           isVendor
-            ? "bg-blue-600 text-white rounded-br-sm"
-            : "bg-white text-gray-800 shadow-sm border border-gray-200 rounded-bl-sm"
+            ? "bg-blue-600 dark:bg-blue-700 text-white rounded-br-sm"
+            : "bg-white dark:bg-dark-surface text-gray-800 dark:text-dark-text shadow-sm border border-gray-200 dark:border-dark-border rounded-bl-sm"
         }`}
       >
         <div className="text-xs font-medium mb-1 opacity-75">
           {isVendor ? "You" : "Procurement Manager"}
         </div>
         <div className="whitespace-pre-wrap">{message.content}</div>
-        <div className={`text-xs mt-2 ${isVendor ? "text-blue-200" : "text-gray-400"}`}>
+        <div className={`text-xs mt-2 ${isVendor ? "text-blue-200 dark:text-blue-300" : "text-gray-400 dark:text-gray-500"}`}>
           {new Date(message.createdAt).toLocaleTimeString()}
         </div>
       </div>

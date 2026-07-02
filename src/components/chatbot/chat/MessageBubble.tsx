@@ -72,16 +72,16 @@ export default function MessageBubble({ message, isGrouped = false, vendorMode =
       <div
         className={`max-w-[70%] rounded-lg pt-6 px-6 pb-6 ${
           alignLeft
-            ? (pmMode ? "bg-blue-50 border border-blue-200 border-l-2" : "bg-white border border-gray-200")
-            : (pmMode ? "bg-white border border-gray-200" : "bg-blue-50 border border-blue-200 border-l-2")
+            ? (pmMode ? "bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 border-l-2" : "bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border")
+            : (pmMode ? "bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border" : "bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 border-l-2")
         }`}
       >
         {/* Message Header */}
         <div className="flex justify-between items-center mb-2 gap-4">
-          <span className="text-xs font-medium text-gray-500">
+          <span className="text-xs font-medium text-gray-500 dark:text-dark-text-secondary">
             {getLabel()}
           </span>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-gray-400 dark:text-gray-500">
             {new Date(message.createdAt).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
@@ -91,7 +91,7 @@ export default function MessageBubble({ message, isGrouped = false, vendorMode =
 
         {/* Message Content */}
         {shouldShowContent && (
-          <div className="text-base leading-relaxed whitespace-pre-wrap text-gray-800">
+          <div className="text-base leading-relaxed whitespace-pre-wrap text-gray-800 dark:text-dark-text">
             {displayContent ||
               (isAccordo && decision
                 ? `${

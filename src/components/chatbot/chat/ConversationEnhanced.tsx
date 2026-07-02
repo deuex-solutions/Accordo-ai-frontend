@@ -472,8 +472,8 @@ function MessageBubbleWithIntent({
         <div
           className={`px-4 pt-3 pb-0 rounded-lg ${
             isVendor
-              ? 'bg-white border border-gray-200'
-              : 'bg-blue-500 text-white'
+              ? 'bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border text-gray-800 dark:text-dark-text'
+              : 'bg-blue-500 dark:bg-blue-600 text-white'
           }`}
         >
           <p className="text-sm whitespace-pre-wrap">{message.content}</p>

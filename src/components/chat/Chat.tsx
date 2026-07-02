@@ -263,7 +263,7 @@ const Chat = () => {
                                         className={`rounded-2xl p-6 shadow-lg ${
                                             msg.role === "user"
                                                 ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-br-md"
-                                                : "bg-white text-gray-800 rounded-bl-md border border-gray-100"
+                                                : "bg-white dark:bg-dark-surface text-gray-800 dark:text-dark-text rounded-bl-md border border-gray-100 dark:border-dark-border"
                                         }`}
                                     >
                                         {msg.isTyping ? (
@@ -273,7 +273,7 @@ const Chat = () => {
                                                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-100"></div>
                                                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-200"></div>
                                                 </div>
-                                                <span className="text-sm text-gray-600 font-medium">
+                                                <span className="text-sm text-gray-600 dark:text-dark-text-secondary font-medium">
                                                     Accordo AI is thinking...
                                                 </span>
                                             </div>
